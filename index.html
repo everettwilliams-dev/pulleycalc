@@ -81,28 +81,28 @@
   </style>
 </head>
 <body>
-  <h1>Pulley RPM Calculator</h1>
+  <h1>PulleyCalc</h1>
 
   <div class="container">
     <div class="input-group">
       <label for="teeth1">Pulley 1 (Driver) Teeth</label>
-      <input type="number" id="teeth1" value="10" min="1">
+      <input type="number" id="teeth1" value="16" min="1">
     </div>
 
     <div class="input-group">
       <label for="teeth2">Pulley 2 (Driven) Teeth</label>
-      <input type="number" id="teeth2" value="14" min="1">
+      <input type="number" id="teeth2" value="16" min="1">
     </div>
 
     <div class="input-group">
       <label for="rpm1">Pulley 1 Speed (RPM)</label>
-      <input type="number" id="rpm1" value="6000" min="0">
+      <input type="number" id="rpm1" value="435" min="0">
     </div>
 
-    <div class="result" id="result">Pulley 2 RPM: 4286.00</div>
+    <div class="result" id="result">Pulley 2 RPM: 435.00</div>
   </div>
 
-  <footer>Auto Pulley Ratio Calculator</footer>
+  <footer>Looking for COTS motor information? Check <a href="everettwilliams-dev.github.io/pulleycalc/cots-pulleys.html">this page</a>!</footer>
 
   <script>
     const teeth1 = document.getElementById('teeth1');
