@@ -5,7 +5,7 @@
   <title>Pulley RPM Calculator</title>
   <style>
     body {
-      background-color: #111;
+      background-color: #000;
       color: #fff;
       font-family: "Segoe UI", sans-serif;
       display: flex;
@@ -24,17 +24,22 @@
       color: #00e0ff;
     }
 
-    .calc-box {
-      background: #1b1b1b;
-      border: 1px solid #333;
-      border-radius: 10px;
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      max-width: 600px;
+      width: 100%;
+      background: #111;
       padding: 2rem;
-      width: 320px;
+      border-radius: 10px;
       box-shadow: 0 0 20px #000;
     }
 
     .input-group {
       margin-bottom: 1.5rem;
+      width: 100%;
     }
 
     label {
@@ -53,27 +58,12 @@
       border-radius: 5px;
     }
 
-    button {
-      background: #00e0ff;
-      color: #000;
-      font-weight: bold;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1.2rem;
-    }
-
-    button:hover {
-      background: #00bcd4;
-    }
-
     .result {
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       font-size: 1.5rem;
       text-align: center;
       color: #00ffae;
+      font-weight: bold;
     }
 
     footer {
@@ -81,11 +71,19 @@
       font-size: 0.9rem;
       color: #777;
     }
+
+    @media (max-aspect-ratio: 3/4) {
+      .container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>Pulley RPM Calculator</h1>
-  <div class="calc-box">
+
+  <div class="container">
     <div class="input-group">
       <label for="teeth1">Pulley 1 (Driver) Teeth</label>
       <input type="number" id="teeth1" value="10" min="1">
@@ -101,30 +99,36 @@
       <input type="number" id="rpm1" value="6000" min="0">
     </div>
 
-    <button onclick="calculate()">Calculate Pulley 2 RPM</button>
-
-    <div class="result" id="result">Pulley 2 RPM: —</div>
+    <div class="result" id="result">Pulley 2 RPM: 4286.00</div>
   </div>
 
-  <footer>Simple Pulley Ratio Calculator</footer>
+  <footer>Auto Pulley Ratio Calculator</footer>
 
   <script>
-    function calculate() {
-      const teeth1 = parseFloat(document.getElementById('teeth1').value);
-      const teeth2 = parseFloat(document.getElementById('teeth2').value);
-      const rpm1 = parseFloat(document.getElementById('rpm1').value);
+    const teeth1 = document.getElementById('teeth1');
+    const teeth2 = document.getElementById('teeth2');
+    const rpm1 = document.getElementById('rpm1');
+    const result = document.getElementById('result');
 
-      if (teeth1 <= 0 || teeth2 <= 0 || rpm1 < 0) {
-        document.getElementById('result').textContent = "Please enter valid values.";
-        return;
+    function calculateRPM() {
+      const t1 = parseFloat(teeth1.value);
+      const t2 = parseFloat(teeth2.value);
+      const n1 = parseFloat(rpm1.value);
+
+      if (t1 > 0 && t2 > 0 && n1 >= 0) {
+        const n2 = (n1 * t1) / t2;
+        result.textContent = `Pulley 2 RPM: ${n2.toFixed(2)}`;
+      } else {
+        result.textContent = "Please enter valid values.";
       }
-
-      // Formula: N1 * T1 = N2 * T2
-      const rpm2 = (rpm1 * teeth1) / teeth2;
-
-      document.getElementById('result').textContent =
-        "Pulley 2 RPM: " + rpm2.toFixed(2);
     }
+
+    teeth1.addEventListener('input', calculateRPM);
+    teeth2.addEventListener('input', calculateRPM);
+    rpm1.addEventListener('input', calculateRPM);
+
+    // Initial calculation on load
+    calculateRPM();
   </script>
 </body>
 </html>
