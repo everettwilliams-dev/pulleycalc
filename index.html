@@ -25,10 +25,11 @@
     }
 
     .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      max-width: 500px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      max-width: 600px;
       width: 100%;
       background: #111;
       padding: 2rem;
@@ -37,8 +38,8 @@
     }
 
     .input-group {
-      display: flex;
-      flex-direction: column;
+      margin-bottom: 1.5rem;
+      width: 100%;
     }
 
     label {
@@ -57,6 +58,14 @@
       border-radius: 5px;
     }
 
+    .result {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      text-align: center;
+      color: #00ffae;
+      font-weight: bold;
+    }
+
     footer {
       margin-top: 3rem;
       font-size: 0.9rem;
@@ -65,7 +74,8 @@
 
     @media (max-aspect-ratio: 3/4) {
       .container {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        gap: 1rem;
       }
     }
   </style>
@@ -75,24 +85,21 @@
 
   <div class="container">
     <div class="input-group">
-      <label for="teeth1">Driver Teeth</label>
-      <input type="number" id="teeth1" value="1" min="1">
+      <label for="teeth1">Pulley 1 (Driver) Teeth</label>
+      <input type="number" id="teeth1" value="10" min="1">
     </div>
 
     <div class="input-group">
-      <label for="teeth2">Driven Teeth</label>
-      <input type="number" id="teeth2" value="1" min="1">
+      <label for="teeth2">Pulley 2 (Driven) Teeth</label>
+      <input type="number" id="teeth2" value="14" min="1">
     </div>
 
     <div class="input-group">
-      <label for="rpm1">Driver RPM</label>
-      <input type="number" id="rpm1" value="1" min="0">
+      <label for="rpm1">Pulley 1 Speed (RPM)</label>
+      <input type="number" id="rpm1" value="6000" min="0">
     </div>
 
-    <div class="input-group">
-      <label for="rpm2">Driven RPM</label>
-      <input type="number" id="rpm2" value="1" min="0">
-    </div>
+    <div class="result" id="result">Pulley 2 RPM: 4286.00</div>
   </div>
 
   <footer>Auto Pulley Ratio Calculator</footer>
@@ -101,50 +108,27 @@
     const teeth1 = document.getElementById('teeth1');
     const teeth2 = document.getElementById('teeth2');
     const rpm1 = document.getElementById('rpm1');
-    const rpm2 = document.getElementById('rpm2');
+    const result = document.getElementById('result');
 
-    let updating = false; // prevent feedback loops
-
-    function updateFromDriver() {
-      if (updating) return;
-      updating = true;
-
+    function calculateRPM() {
       const t1 = parseFloat(teeth1.value);
       const t2 = parseFloat(teeth2.value);
       const n1 = parseFloat(rpm1.value);
 
-      if (t1 > 0 && t2 > 0 && !isNaN(n1)) {
+      if (t1 > 0 && t2 > 0 && n1 >= 0) {
         const n2 = (n1 * t1) / t2;
-        rpm2.value = n2.toFixed(2);
+        result.textContent = `Pulley 2 RPM: ${n2.toFixed(2)}`;
+      } else {
+        result.textContent = "Please enter valid values.";
       }
-
-      updating = false;
     }
 
-    function updateFromDriven() {
-      if (updating) return;
-      updating = true;
+    teeth1.addEventListener('input', calculateRPM);
+    teeth2.addEventListener('input', calculateRPM);
+    rpm1.addEventListener('input', calculateRPM);
 
-      const t1 = parseFloat(teeth1.value);
-      const t2 = parseFloat(teeth2.value);
-      const n2 = parseFloat(rpm2.value);
-
-      if (t1 > 0 && t2 > 0 && !isNaN(n2)) {
-        const n1 = (n2 * t2) / t1;
-        rpm1.value = n1.toFixed(2);
-      }
-
-      updating = false;
-    }
-
-    // Event listeners
-    teeth1.addEventListener('input', updateFromDriver);
-    teeth2.addEventListener('input', updateFromDriver);
-    rpm1.addEventListener('input', updateFromDriver);
-    rpm2.addEventListener('input', updateFromDriven);
-
-    // Initial calculation
-    updateFromDriver();
+    // Initial calculation on load
+    calculateRPM();
   </script>
 </body>
 </html>
