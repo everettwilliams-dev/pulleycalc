@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pulley RPM Calculator</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #00e0ff;
+    }
+
+    .calc-box {
+      background: #1b1b1b;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 2rem;
+      width: 320px;
+      box-shadow: 0 0 20px #000;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      font-size: 1.3rem;
+      padding: 0.5rem;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #00e0ff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.2rem;
+    }
+
+    button:hover {
+      background: #00bcd4;
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      font-size: 1.5rem;
+      text-align: center;
+      color: #00ffae;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pulley RPM Calculator</h1>
+  <div class="calc-box">
+    <div class="input-group">
+      <label for="teeth1">Pulley 1 (Driver) Teeth</label>
+      <input type="number" id="teeth1" value="10" min="1">
+    </div>
+
+    <div class="input-group">
+      <label for="teeth2">Pulley 2 (Driven) Teeth</label>
+      <input type="number" id="teeth2" value="14" min="1">
+    </div>
+
+    <div class="input-group">
+      <label for="rpm1">Pulley 1 Speed (RPM)</label>
+      <input type="number" id="rpm1" value="6000" min="0">
+    </div>
+
+    <button onclick="calculate()">Calculate Pulley 2 RPM</button>
+
+    <div class="result" id="result">Pulley 2 RPM: —</div>
+  </div>
+
+  <footer>Simple Pulley Ratio Calculator</footer>
+
+  <script>
+    function calculate() {
+      const teeth1 = parseFloat(document.getElementById('teeth1').value);
+      const teeth2 = parseFloat(document.getElementById('teeth2').value);
+      const rpm1 = parseFloat(document.getElementById('rpm1').value);
+
+      if (teeth1 <= 0 || teeth2 <= 0 || rpm1 < 0) {
+        document.getElementById('result').textContent = "Please enter valid values.";
+        return;
+      }
+
+      // Formula: N1 * T1 = N2 * T2
+      const rpm2 = (rpm1 * teeth1) / teeth2;
+
+      document.getElementById('result').textContent =
+        "Pulley 2 RPM: " + rpm2.toFixed(2);
+    }
+  </script>
+</body>
+</html>
